@@ -47,7 +47,7 @@ Map.prototype.tileCollision = function(id, x, y) {
 	
 	
 	}
-	return { d: 0, nx: 0, ny: 0, px: 0, py: 0 };
+	return { d: 0 };
 };
 
 
@@ -56,11 +56,20 @@ Map.prototype.collision = function(player) {
 	var x1 = Math.floor(player.x / this.tileSize);
 	var y1 = Math.floor(player.y / this.tileSize);
 
-	
+	var col = { d: 0 };
+
+	for(var y = y1, ; y < y1 + 2; ++y) {
+		for(var x = x1, ; x < x1 + 2; ++x) {
+
+			var c = this.tileCollision(data[y][x],
+					player.x - x * this.tileSize,
+					player.y - y * this.tileSize)
+		}
+	}
+
+
 
 };
-
-
 
 
 
