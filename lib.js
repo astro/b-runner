@@ -21,10 +21,12 @@ var layers = [];
 window.onload = function() {
 	canvas = document.getElementById("canvas");
 	ctx = canvas.getContext('2d');
-	setInterval(loop, 20);	// 50 fps
 
 	player = new Player();
-	layers[0] = [player];
+	layers[0] = [(player)];
+	layers[10] = [map];
+
+	setInterval(loop, 20);	// 50 fps
 };
 
 
@@ -39,14 +41,14 @@ var loop = function() {
 			      });
 	var minZ = layerZs[0], maxZ = layerZs[layerZs.length - 1];
 	for(var z = maxZ; z >= minZ; z--) {
-	    layers[z].forEach(function(sprite) {
-		sprite.draw();
-	    });
+	    if (layers[z])
+		layers[z].forEach(function(obj) {
+		    obj.draw();
+		});
 	}
-	map.draw();
-
 };
 
+var SCALE = 1;
 var sprites = { player0: { src: 'sprite.png',
 			   x: 0, y: 0, w: 9, h: 11 },
 		player1: { src: 'sprite.png',
@@ -56,23 +58,46 @@ var sprites = { player0: { src: 'sprite.png',
 		player3: { src: 'sprite.png',
 			   x: 27, y: 0, w: 9, h: 11 },
 		player4: { src: 'sprite.png',
-			   x: 36, y: 0, w: 9, h: 11 }
+			   x: 36, y: 0, w: 9, h: 11 },
+		hangingWeed: { src: 'sprite.png',
+			       x: 0, y: 16, w: 32, h: 10 },
+		mud: { src: 'sprite.png',
+		       x: 32, y: 16, w: 32, h: 32 }
 	      };
 var images = {};  // cached
-drawSprite = function(spriteId, x, y, w, h) {
+drawSprite = function(spriteId, x, y) {
     var sprite = sprites[spriteId];
-    if (!images[sprite.src]) {
+    var image = images[sprite.src];
+    if (!image) {
 	// load image
-	var image = new Image();
+	image = new Image();
 	image.src = sprite.src;
 	images[sprite.src] = image;
+	image.onload = function() {
+	    // our annotation
+	    image.hasLoaded = true;
+	};
     } else {
-	var image = images[sprite.src];
-	if (image.complete) {
-	    ctx.drawImage(image,
-			  sprite.x, sprite.y, sprite.w, sprite.h,
-			  x, y, w || sprite.w, h || sprite.h);
+	if (image.hasLoaded) {
+	    try {
+		ctx.drawImage(image,
+			      sprite.x, sprite.y, sprite.w, sprite.h,
+			      x * SCALE, y * SCALE, sprite.w * SCALE, sprite.h * SCALE);
+	    } catch (e) {
+		console.log(e.stack || e.message || e);
+		console.log('drawImage ' + JSON.stringify([sprite.x, sprite.y, sprite.w, sprite.h,
+			      x * SCALE, y * SCALE, sprite.w * SCALE, sprite.h * SCALE]));
+		/*console.log(spriteId + ': ' + JSON.stringify([x, y]));*/
+	    }
 	}
     }
 };
 
+if (!Object.keys)
+    Object.keys = function(o) {
+	var r = [];
+	for(var k in o)
+	    if (o.hasOwnProperty(k))
+		r.push(k);
+	return r;
+    };

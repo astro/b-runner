@@ -21,7 +21,7 @@ Player.prototype.draw = function() {
 	if(this.dy) { a = 4; }
 	else if(this.dx) { a = this.anim; }
 
-	drawSprite('player' + a, this.x - 9, this.y - 11, 18, 22);
+	drawSprite('player' + a, this.x - 9, this.y - 11);
 };
 
 Player.prototype.update = function() {
