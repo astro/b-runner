@@ -14,14 +14,17 @@ var canvas;
 var ctx;
 
 var player;
+var layers = [];
 
 
 window.onload = function () {
 	canvas = document.getElementById("canvas");
 	ctx = canvas.getContext('2d');
-	setInterval(loop, 20);	// 50 fps
 
 	player = new Player();
+	layers[0] = [player];
+
+	setInterval(loop, 20);	// 50 fps
 };
 
 
@@ -29,6 +32,15 @@ var loop = function () {
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
 
 	player.update();
-	player.draw();
 
+	var layerZs = Object.keys(layers).
+			  map(function(key) {
+				  return parseInt(key, 10);
+			      });
+	var minZ = layerZs[0], maxZ = layerZs[layerZs.length - 1];
+	for(var z = maxZ; z >= minZ; z--) {
+	    layers[z].forEach(function(sprite) {
+		sprite.draw();
+	    });
+	}
 };
