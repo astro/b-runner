@@ -1,7 +1,7 @@
 
 
 
-Player = function () {
+var Player = function() {
 
 	this.x = 160;
 	this.y = 0;
@@ -12,7 +12,7 @@ Player = function () {
 	this.anim = 0;
 };
 
-Player.prototype.draw = function () {
+Player.prototype.draw = function() {
 
 	this.frame = (this.frame + 1) % 3;
 	if(!this.frame) { this.anim = (this.anim + 1) % 3; }
@@ -23,7 +23,14 @@ Player.prototype.draw = function () {
 
 	drawSprite('player' + a, this.x - 9, this.y - 11, 18, 22);
 };
-Player.prototype.update = function () {
+
+Player.prototype.update = function() {
+
+	if(this.dy == 0) { // when on ground
+
+
+		if(keys[88]) this.dy = -5;	// jump
+	}
 
 	this.dx = (keys[39] - keys[37]) * 3;
 	this.dy += 0.17;
@@ -35,7 +42,6 @@ Player.prototype.update = function () {
 		this.y = 290;
 		this.dy = 0;
 	}
-	if(this.dy == 0 && keys[88] == 1) this.dy = -5;
 };
 
 

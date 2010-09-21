@@ -2,6 +2,7 @@ var include = function(file) { document.write('<script type="text/javascript" sr
 
 
 include("player.js");
+include("map.js");
 
 
 // input
@@ -17,18 +18,17 @@ var player;
 var layers = [];
 
 
-window.onload = function () {
+window.onload = function() {
 	canvas = document.getElementById("canvas");
 	ctx = canvas.getContext('2d');
+	setInterval(loop, 20);	// 50 fps
 
 	player = new Player();
 	layers[0] = [player];
-
-	setInterval(loop, 20);	// 50 fps
 };
 
 
-var loop = function () {
+var loop = function() {
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
 
 	player.update();
@@ -43,6 +43,8 @@ var loop = function () {
 		sprite.draw();
 	    });
 	}
+	map.draw();
+
 };
 
 var sprites = { player0: { src: 'sprite.png',
