@@ -44,3 +44,33 @@ var loop = function () {
 	    });
 	}
 };
+
+var sprites = { player0: { src: 'sprite.png',
+			   x: 0, y: 0, w: 9, h: 11 },
+		player1: { src: 'sprite.png',
+			   x: 9, y: 0, w: 9, h: 11 },
+		player2: { src: 'sprite.png',
+			   x: 18, y: 0, w: 9, h: 11 },
+		player3: { src: 'sprite.png',
+			   x: 27, y: 0, w: 9, h: 11 },
+		player4: { src: 'sprite.png',
+			   x: 36, y: 0, w: 9, h: 11 }
+	      };
+var images = {};  // cached
+drawSprite = function(spriteId, x, y, w, h) {
+    var sprite = sprites[spriteId];
+    if (!images[sprite.src]) {
+	// load image
+	var image = new Image();
+	image.src = sprite.src;
+	images[sprite.src] = image;
+    } else {
+	var image = images[sprite.src];
+	if (image.complete) {
+	    ctx.drawImage(image,
+			  sprite.x, sprite.y, sprite.w, sprite.h,
+			  x, y, w || sprite.w, h || sprite.h);
+	}
+    }
+};
+

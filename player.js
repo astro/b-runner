@@ -1,8 +1,5 @@
 
 
-var sprite = new Image();
-sprite.src = "sprite.png";
-
 
 Player = function () {
 
@@ -24,8 +21,7 @@ Player.prototype.draw = function () {
 	if(this.dy) { a = 4; }
 	else if(this.dx) { a = this.anim; }
 
-	ctx.drawImage(sprite, a*9, 0, 9, 11, this.x-9, this.y-11, 18, 22);
-
+	drawSprite('player' + a, this.x - 9, this.y - 11, 18, 22);
 };
 Player.prototype.update = function () {
 
@@ -40,7 +36,6 @@ Player.prototype.update = function () {
 		this.dy = 0;
 	}
 	if(this.dy == 0 && keys[88] == 1) this.dy = -5;
-
 };
 
 
