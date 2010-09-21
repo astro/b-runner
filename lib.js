@@ -2,6 +2,7 @@ var include = function(file) { document.write('<script type="text/javascript" sr
 
 
 include("player.js");
+include("map.js");
 
 
 // input
@@ -16,7 +17,7 @@ var ctx;
 var player;
 
 
-window.onload = function () {
+window.onload = function() {
 	canvas = document.getElementById("canvas");
 	ctx = canvas.getContext('2d');
 	setInterval(loop, 20);	// 50 fps
@@ -25,10 +26,12 @@ window.onload = function () {
 };
 
 
-var loop = function () {
+var loop = function() {
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
 
 	player.update();
 	player.draw();
+
+	map.draw();
 
 };
