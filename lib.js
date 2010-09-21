@@ -15,6 +15,7 @@ var canvas;
 var ctx;
 
 var player;
+var cameraX = 0, cameraY = 0;
 var map;
 var layers = [];
 
@@ -82,9 +83,11 @@ drawSprite = function(spriteId, x, y) {
     } else {
 	if (image.hasLoaded) {
 	    try {
+		var xOff = canvas.width / SCALE / 2 - cameraX;
+		var yOff = canvas.height / SCALE / 2 - cameraY;
 		ctx.drawImage(image,
 			      sprite.x, sprite.y, sprite.w, sprite.h,
-			      x * SCALE, y * SCALE, sprite.w * SCALE, sprite.h * SCALE);
+			      Math.floor((x + xOff) * SCALE), Math.floor((y + yOff) * SCALE), sprite.w * SCALE, sprite.h * SCALE);
 	    } catch (e) {
 		console.log(e.stack || e.message || e);
 		console.log('drawImage ' + JSON.stringify([sprite.x, sprite.y, sprite.w, sprite.h,

@@ -43,6 +43,9 @@ Player.prototype.update = function() {
 		this.y = 290;
 		this.dy = 0;
 	}
+
+	cameraX = this.x;
+	cameraY = this.y;
 };
 
 
