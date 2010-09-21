@@ -34,6 +34,7 @@ var loop = function() {
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
 
 	player.update();
+	map.collision(player);
 
 	var layerZs = Object.keys(layers).map(function(key) { return parseInt(key, 10); });
 
@@ -48,16 +49,12 @@ var loop = function() {
 
 };
 
-var sprites = { player0: { src: 'sprite.png',
-				x: 0, y: 0, w: 9, h: 11 },
-				player1: { src: 'sprite.png',
-				x: 9, y: 0, w: 9, h: 11 },
-				player2: { src: 'sprite.png',
-				x: 18, y: 0, w: 9, h: 11 },
-				player3: { src: 'sprite.png',
-				x: 27, y: 0, w: 9, h: 11 },
-				player4: { src: 'sprite.png',
-				x: 36, y: 0, w: 9, h: 11 }
+var sprites = {
+	player0: { src: 'sprite.png', x: 0, y: 0, w: 9, h: 11 },
+	player1: { src: 'sprite.png', x: 9, y: 0, w: 9, h: 11 },
+	player2: { src: 'sprite.png', x: 18, y: 0, w: 9, h: 11 },
+	player3: { src: 'sprite.png', x: 27, y: 0, w: 9, h: 11 },
+	player4: { src: 'sprite.png', x: 36, y: 0, w: 9, h: 11 }
 };
 
 var images = {};  // cached

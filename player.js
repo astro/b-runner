@@ -7,6 +7,7 @@ var Player = function() {
 	this.y = 0;
 	this.dx = 0;
 	this.dy = 0;
+	this.radius = 10;
 
 	this.frame = 0;
 	this.anim = 0;
