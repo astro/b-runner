@@ -59,10 +59,10 @@ Map.prototype.collision = function(player) {
 	var col = { d: 0 };
 
 
-	for(var y = y1, ; y < y1 + 2; ++y) {
-		for(var x = x1, ; x < x1 + 2; ++x) {
+	for(var y = y1; y < y1 + 2; ++y) {
+		for(var x = x1; x < x1 + 2; ++x) {
 
-			var c = this.tileCollision(data[y][x],
+			var c = this.tileCollision(this.data[y][x],
 					player.x - x * this.tileSize,
 					player.y - y * this.tileSize)
 		}
