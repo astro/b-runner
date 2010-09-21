@@ -1,4 +1,4 @@
-var include = function(file) { document.write('<script type="text/javascript" src="' + file + '"></script>'); }
+var include = function(file) { document.write('<script type="text/javascript" src="' + file + '"></script>'); };
 
 
 include("player.js");
@@ -15,6 +15,7 @@ var canvas;
 var ctx;
 
 var player;
+var map;
 var layers = [];
 
 
@@ -23,7 +24,8 @@ window.onload = function() {
 	ctx = canvas.getContext('2d');
 
 	player = new Player();
-	layers[0] = [(player)];
+	map = new Map();
+	layers[0] = [player];
 	layers[10] = [map];
 
 	setInterval(loop, 20);	// 50 fps
@@ -34,12 +36,12 @@ var loop = function() {
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
 
 	player.update();
+	map.collision(player);
 
-	var layerZs = Object.keys(layers).
-			  map(function(key) {
-				  return parseInt(key, 10);
-			      });
+	var layerZs = Object.keys(layers).map(function(key) { return parseInt(key, 10); });
+
 	var minZ = layerZs[0], maxZ = layerZs[layerZs.length - 1];
+
 	for(var z = maxZ; z >= minZ; z--) {
 	    if (layers[z])
 		layers[z].forEach(function(obj) {

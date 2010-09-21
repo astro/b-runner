@@ -1,11 +1,24 @@
 var Map = function() {
 
+
 	this.data = [
-		[0,0,0,1],
-		[0,0,0,1],
-		[0,0,0,1],
-		[1,1,1,1]
+		[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+		[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+		[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+		[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+		[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+		[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+		[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+		[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+		[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+		[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+		[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+		[1,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,0,1],
+		[1,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,0,1],
+		[1,1,1,1,0,0,0,0,0,0,0,0,0,1,1,1,0,0,0,1],
+		[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
 	];
+	this.tileSize = 32;
 };
 
 Map.prototype.draw = function() {
@@ -14,13 +27,12 @@ Map.prototype.draw = function() {
 
 	for(var y = 2, ly = this.data.length; y < ly; ++y) {
 		for(var x = 0, lx = this.data[y].length; x < lx; ++x) {
-
 			if (this.data[y][x]) {
 			    drawSprite('mud',
-				       x * 32, y * 32);
+				       x * this.tileSize, y * this.tileSize);
 			    if (!this.data[y-1] || !this.data[y-1][x]) {
 				drawSprite('hangingWeed',
-					   x * 32, y * 32);
+					   x * this.tileSize, y * this.tileSize);
 			    }
 			}
 		}
@@ -28,4 +40,30 @@ Map.prototype.draw = function() {
 
 };
 
-var map = new Map();
+
+Map.prototype.tileCollision = function(id, x, y) {
+	if(id == 1) {
+
+
+
+	}
+	return { d: 0, nx: 0, ny: 0, px: 0, py: 0 };
+};
+
+
+Map.prototype.collision = function(player) {
+
+	var x1 = Math.floor(player.x / this.tileSize);
+	var y1 = Math.floor(player.y / this.tileSize);
+
+
+
+};
+
+
+
+
+
+
+
+
