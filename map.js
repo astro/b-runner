@@ -1,6 +1,5 @@
 var Map = function() {
 
-
 	this.data = [
 		[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
 		[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
@@ -54,7 +53,6 @@ Map.prototype.draw = function() {
 
 var POLY = [vec(100, 180), vec(300, 100), vec(350, 200)];
 
-
 var line = function(a, b) {
 	ctx.beginPath();
 	ctx.lineTo(a.x, a.y);
@@ -62,13 +60,11 @@ var line = function(a, b) {
 	ctx.stroke();
 };
 
-Map.prototype.collision = function(player) {
-
-	ctx.lineWidth = 2;
+var polygonCollision = function(m, poly) {
 
 	var col = {};
 	col.d = 9e9;
-	
+
 	var m = vec(player.x, player.y);
 
 	var len = POLY.length;
@@ -108,11 +104,17 @@ Map.prototype.collision = function(player) {
 		a = b;
 	}
 
+	return col;
+}
+
+Map.prototype.collision = function(player) {
+
+	var col = polygonCollision(vec(player.x, player.y), POLY);
+
 	if(col.d < player.radius) {
 
 		ctx.strokeStyle = "#00f";
 		line(col.p, col.p.add(col.n.mul(20)));
-
 
 		// apply corrections here
 		col.d -= player.radius;
@@ -149,16 +151,4 @@ Map.prototype.collision = function(player) {
 
 
 };
-
-Map.prototype.tileCollision = function(id, x, y) {
-	if(id == 1) {
-
-		var p = TILES[id];
-
-
-
-	}
-	return { d: 0 };
-};
-
 

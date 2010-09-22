@@ -7,7 +7,7 @@ var Player = function() {
 	this.y = 100;
 	this.dx = 0;
 	this.dy = 0;
-	this.radius = 30;
+	this.radius = 10;
 
 };
 
