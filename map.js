@@ -1,3 +1,4 @@
+
 var TILE_SIZE = 20;
 
 var Map = function() {
@@ -9,23 +10,16 @@ var Map = function() {
 		[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,5,1],
 		[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
 		[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-		[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-		[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-		[1,0,0,0,0,0,0,0,0,6,6,6,0,0,0,0,0,0,0,1],
+		[1,0,0,0,0,0,7,0,0,0,0,0,0,0,0,0,0,0,0,1],
+		[1,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1],
+		[1,0,0,0,0,0,1,1,1,6,6,0,0,0,0,0,0,0,0,1],
 		[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
 		[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
 		[1,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,0,1],
 		[1,2,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,0,1],
-		[1,1,1,1,0,0,0,0,0,0,0,0,3,1,1,1,0,0,0,1],
+		[1,1,1,1,7,7,0,0,0,0,0,0,3,1,1,1,0,0,0,1],
 		[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
 	];
-};
-
-var line = function(a, b) {
-	ctx.beginPath();
-	ctx.lineTo(a.x, a.y);
-	ctx.lineTo(b.x, b.y);
-	ctx.stroke();
 };
 
 var tiles = [undefined,
@@ -35,6 +29,7 @@ var tiles = [undefined,
 	[vec(0, 0), vec(TILE_SIZE, 0), vec(0, TILE_SIZE)],
 	[vec(0, 0), vec(TILE_SIZE, 0), vec(TILE_SIZE, TILE_SIZE)],
 	[vec(0, 0), vec(TILE_SIZE, 0), vec(TILE_SIZE, TILE_SIZE/2), vec(0, TILE_SIZE/2)],
+	[vec(0, TILE_SIZE/2), vec(TILE_SIZE, TILE_SIZE/2), vec(TILE_SIZE, TILE_SIZE), vec(0, TILE_SIZE)],
 ];
 
 
@@ -94,12 +89,12 @@ var circleCollision = function(circle, m) {
 
 Map.prototype.collision = function(player) {
 
-	var m = vec(player.x, player.y);
+	var m = player.p;
 
 	var col = { d: 9e9 };
 
-	var x1 = Math.floor(player.x / TILE_SIZE - 0.5);
-	var y1 = Math.floor(player.y / TILE_SIZE - 0.5);
+	var x1 = Math.floor(m.x / TILE_SIZE - 0.5);
+	var y1 = Math.floor(m.y / TILE_SIZE - 0.5);
 
 	for(var y = y1; y < y1 + 2; ++y) {
 		var row = this.data[y];
@@ -119,21 +114,12 @@ Map.prototype.collision = function(player) {
 		}
 	}
 
-
 	if(col.d < player.radius) { 	// apply corrections
-
 		col.d -= player.radius;
-
 		var k = col.n.mul(col.d);
-		player.x -= k.x;
-		player.y -= k.y;
-
-		var dp = vec(player.dx, player.dy);
+		player.p = player.p.sub(k);
 		var pn = col.n.perp();
-		dp = pn.mul(dp.dot(pn));
-		player.dx  = dp.x;
-		player.dy  = dp.y;
-
+		player.v = pn.mul(player.v.dot(pn));
 	}
 
 };
@@ -158,7 +144,7 @@ Map.prototype.draw = function() {
 				ctx.lineTo(v.x + x * TILE_SIZE, v.y + y * TILE_SIZE);
 			}
 			ctx.fill();
-			ctx.stroke();
+//			ctx.stroke();
 
 		}
 	}
