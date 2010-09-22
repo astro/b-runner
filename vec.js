@@ -9,7 +9,7 @@
 		this.y = y || 0;
 	};
 
-	V.prototype.dup = function(o) {
+	V.prototype.dup = function() {
 		return new V(this.x, this.y);
 	}
 
@@ -65,5 +65,4 @@
 	}
 
 })();
-
 

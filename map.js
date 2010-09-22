@@ -94,10 +94,10 @@ Map.prototype.collision = function(player) {
 	var x1 = Math.floor(player.p.x / TILE_SIZE - 0.5) - 1;
 	var y1 = Math.floor(player.p.y / TILE_SIZE - 0.5) - 1;
 
-	for(var y = y1; y < y1 + 3; ++y) {
+	for(var y = y1; y < y1 + 4; ++y) {
 		var row = this.data[y];
 		if(!row) continue;
-		for(var x = x1; x < x1 + 3; ++x) {
+		for(var x = x1; x < x1 + 4; ++x) {
 			if(!row[x]) continue;
 			var poly = tiles[row[x]];
 			if(!poly) continue;
@@ -128,15 +128,6 @@ Map.prototype.collision = function(player) {
 		player.inAir = true;
 		player.normal = vec(0, -1);
 	}
-
-/*
-	ctx.strokeStyle = "#00f";
-	ctx.beginPath();
-	ctx.moveTo(player.p.x, player.p.y);
-	ctx.lineTo(col.p.x, col.p.y);
-	ctx.stroke();
-*/
-
 };
 
 
