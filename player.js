@@ -39,13 +39,13 @@ Player.prototype.update = function() {
 	this.x += this.dx;
 	this.y += this.dy;
 
-	if(this.y > 290) {	// collision
-		this.y = 290;
+	if(this.y > 450) {	// collision
+		this.y = 450;
 		this.dy = 0;
 	}
 
 	cameraX += (this.x - cameraX) / 10;
-	cameraY += (this.y - cameraY) / 10;
+	cameraY += (this.y - 50 - cameraY) / 10;
 };
 
 
