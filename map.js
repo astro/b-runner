@@ -32,8 +32,6 @@ Map.prototype.draw = function() {
 			if(this.data[y][x]) {
 				ctx.fillRect(x * this.tileSize, y * this.tileSize, this.tileSize, this.tileSize);
 			}
-
-
 		}
 	}
 */
@@ -60,7 +58,7 @@ var line = function(a, b) {
 	ctx.stroke();
 };
 
-var polygonCollision = function(m, poly) {
+var polygonCollision = function(poly, m) {
 
 	var col = {};
 	col.d = 9e9;
@@ -109,7 +107,7 @@ var polygonCollision = function(m, poly) {
 
 Map.prototype.collision = function(player) {
 
-	var col = polygonCollision(vec(player.x, player.y), POLY);
+	var col = polygonCollision(POLY, vec(player.x, player.y));
 
 	if(col.d < player.radius) {
 

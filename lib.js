@@ -37,7 +37,6 @@ var loop = function() {
 	player.draw();
 	map.collision(player);
 
-
 };
 
 
