@@ -35,6 +35,9 @@ window.onload = function() {
 
 var loop = function() {
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
+	ctx.save();
+	ctx.translate(Math.round(canvas.width / 2 - cameraX),
+		      Math.round(canvas.height / 2 - cameraY));
 
 	player.update();
 	map.collision(player);
@@ -49,9 +52,10 @@ var loop = function() {
 		    obj.draw();
 		});
 	}
+
+	ctx.restore();
 };
 
-var SCALE = 1;
 var sprites = { player0: { src: 'sprite.png',
 			   x: 0, y: 0, w: 9, h: 11 },
 		player1: { src: 'sprite.png',
@@ -83,16 +87,12 @@ drawSprite = function(spriteId, x, y) {
     } else {
 	if (image.hasLoaded) {
 	    try {
-		var xOff = canvas.width / SCALE / 2 - cameraX;
-		var yOff = canvas.height / SCALE / 2 - cameraY;
+		console.log(spriteId + ': ' + JSON.stringify([x, y, sprite.w, sprite.h]));
 		ctx.drawImage(image,
 			      sprite.x, sprite.y, sprite.w, sprite.h,
-			      Math.floor((x + xOff) * SCALE), Math.floor((y + yOff) * SCALE), sprite.w * SCALE, sprite.h * SCALE);
+			      x, y, sprite.w, sprite.h);
 	    } catch (e) {
 		console.log(e.stack || e.message || e);
-		console.log('drawImage ' + JSON.stringify([sprite.x, sprite.y, sprite.w, sprite.h,
-			      x * SCALE, y * SCALE, sprite.w * SCALE, sprite.h * SCALE]));
-		/*console.log(spriteId + ': ' + JSON.stringify([x, y]));*/
 	    }
 	}
     }
