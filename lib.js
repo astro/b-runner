@@ -18,6 +18,7 @@ var map;
 window.onload = function() {
 	canvas = document.getElementById("canvas");
 	ctx = canvas.getContext('2d');
+	ctx.lineWidth = 2;
 
 	player = new Player();
 	map = new Map();

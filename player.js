@@ -1,6 +1,5 @@
 
 
-
 var Player = function() {
 
 	this.p = vec(160, 100);
@@ -13,13 +12,20 @@ var Player = function() {
 
 Player.prototype.draw = function() {
 
-	ctx.fillStyle = "#111";
+	if(this.inAir) ctx.fillStyle = "#166";
+	else ctx.fillStyle = "#661";
+
 	ctx.beginPath();
 	ctx.arc(this.p.x, this.p.y, this.radius, 0, Math.PI*2, true);
 	ctx.fill();
 
-	ctx.strokeStyle = "#fff";
-
+	ctx.strokeStyle = "#00f";
+	var n = this.p.add(this.normal.mul(20));
+	ctx.beginPath();
+	ctx.lineTo(this.p.x, this.p.y);
+	ctx.lineTo(n.x, n.y);
+	ctx.stroke();
+	
 };
 
 Player.prototype.update = function() {

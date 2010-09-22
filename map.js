@@ -17,7 +17,7 @@ var Map = function() {
 		[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
 		[1,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,0,1],
 		[1,2,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,0,1],
-		[1,1,1,1,7,7,0,0,0,0,0,0,3,1,1,1,0,0,0,1],
+		[1,1,1,1,7,7,0,0,0,0,0,0,3,1,1,1,2,0,3,1],
 		[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
 	];
 };
@@ -89,35 +89,34 @@ var circleCollision = function(circle, m) {
 
 Map.prototype.collision = function(player) {
 
-	var m = player.p;
-
 	var col = { d: 9e9 };
 
-	var x1 = Math.floor(m.x / TILE_SIZE - 0.5);
-	var y1 = Math.floor(m.y / TILE_SIZE - 0.5);
+	var x1 = Math.floor(player.p.x / TILE_SIZE - 0.5) - 1;
+	var y1 = Math.floor(player.p.y / TILE_SIZE - 0.5) - 1;
 
-	for(var y = y1; y < y1 + 2; ++y) {
+	for(var y = y1; y < y1 + 3; ++y) {
 		var row = this.data[y];
 		if(!row) continue;
-		for(var x = x1; x < x1 + 2; ++x) {
+		for(var x = x1; x < x1 + 3; ++x) {
 			if(!row[x]) continue;
-
 			var poly = tiles[row[x]];
 			if(!poly) continue;
 
-			var q = vec(x * TILE_SIZE, y * TILE_SIZE);
-			var w = m.sub(q);
+			var offset = vec(x * TILE_SIZE, y * TILE_SIZE);
+			var w = player.p.sub(offset);
 
 			var c = polygonCollision(poly, w);
-			if(c.d < col.d) col = c;
-
+			if(c.d < col.d) {
+				col = c;
+				col.p = col.p.add(offset);
+			}
 		}
 	}
 
 	if(col.d <= player.radius) { 	// apply corrections
 
-		col.d -= player.radius;
-		var k = col.n.mul(col.d);
+		var d = col.d - player.radius;
+		var k = col.n.mul(d);
 		player.p = player.p.sub(k);
 		var pn = col.n.perp();
 		player.v = pn.mul(player.v.dot(pn));
@@ -129,6 +128,14 @@ Map.prototype.collision = function(player) {
 		player.inAir = true;
 		player.normal = vec(0, -1);
 	}
+
+/*
+	ctx.strokeStyle = "#00f";
+	ctx.beginPath();
+	ctx.moveTo(player.p.x, player.p.y);
+	ctx.lineTo(col.p.x, col.p.y);
+	ctx.stroke();
+*/
 
 };
 
