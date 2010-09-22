@@ -1,9 +1,17 @@
 (function() {
 
+	this.vec = function(x, y) {
+		return new V(x, y);
+	}
+
 	var V = function(x, y) {
 		this.x = x || 0;
 		this.y = y || 0;
 	};
+
+	V.prototype.neg = function() {
+		return new V(-this.x, -this.y);
+	}
 
 	V.prototype.add = function(o) {
 		return new V(this.x + o.x, this.y + o.y);
@@ -37,12 +45,15 @@
 		return this.perp().dot(o);
 	}
 
-	V.prototype.toString = function() {
-		return "vec(" + this.x + "," + this.y + ")";
+	V.prototype.normalize = function() {
+		var ool = 1 / this.len();
+		this.x *= ool;
+		this.y *= ool;
+		return this;
 	}
 
-	this.vec = function(x, y) {
-		return new V(x, y);
+	V.prototype.toString = function() {
+		return "vec(" + this.x + "," + this.y + ")";
 	}
 
 })();

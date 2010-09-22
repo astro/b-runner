@@ -4,37 +4,28 @@
 var Player = function() {
 
 	this.x = 160;
-	this.y = 0;
+	this.y = 100;
 	this.dx = 0;
 	this.dy = 0;
-	this.radius = 10;
+	this.radius = 30;
 
-	this.frame = 0;
-	this.anim = 0;
 };
 
 Player.prototype.draw = function() {
 
-	this.frame = (this.frame + 1) % 3;
-	if(!this.frame) { this.anim = (this.anim + 1) % 3; }
+	ctx.fillStyle = "#222";
+	ctx.beginPath();
+	ctx.arc(this.x, this.y, this.radius, 0, Math.PI*2, true);
+	ctx.fill();
 
-	var a = 3;
-	if(this.dy) { a = 4; }
-	else if(this.dx) { a = this.anim; }
-
-	drawSprite('player' + a, this.x - 9, this.y - 11);
 };
 
 Player.prototype.update = function() {
 
-	if(this.dy == 0) { // when on ground
-
-
-		if(keys[88]) this.dy = -5;	// jump
-	}
-
-	this.dx = (keys[39] - keys[37]) * 3;
-	this.dy += 0.17;
+	this.dx += (keys[39] - keys[37]) * 0.5;
+	this.dy += (keys[40] - keys[38]) * 0.5 + 0.17;
+	this.dx *= 0.98;
+	this.dy *= 0.98;
 
 	this.x += this.dx;
 	this.y += this.dy;
@@ -43,6 +34,9 @@ Player.prototype.update = function() {
 		this.y = 290;
 		this.dy = 0;
 	}
+
+	cameraX = this.x;
+	cameraY = this.y;
 };
 
 
