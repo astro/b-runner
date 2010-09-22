@@ -19,6 +19,18 @@ var cameraX = 0, cameraY = 0;
 var map;
 var layers = [];
 
+var backdrop = {
+    draw: function() {
+	var x, w2 = canvas.width / 2;
+	for(x = -w2; x < w2; x += 10)
+	    drawSprite('sky', cameraX + x, cameraY - 100);
+	var xShift = cameraX / 3;
+	var yShift = cameraY / 10;
+	for(x = cameraX - w2 - xShift; x < cameraX + w2; x += 400)
+	    drawSprite('scenery', x, cameraY - yShift);
+    }
+};
+
 
 window.onload = function() {
 	canvas = document.getElementById("canvas");
@@ -29,21 +41,22 @@ window.onload = function() {
 	player = new Player();
 	map = new Map();
 	layers[0] = [player];
-	layers[10] = [map];
+	layers[5] = [map];
+	layers[10] = [backdrop];
 
 	setInterval(loop, 20);	// 50 fps
 };
 
 
 var loop = function() {
+	player.update();
+	map.collision(player);
+
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
 	ctx.save();
 	//console.log(JSON.stringify({cameraX:cameraX,cameraY:cameraY,w:canvas.width,h:canvas.height,x:Math.round(canvas.width / 2 - cameraX),y:Math.round(canvas.height / 2 - cameraY)}));
 	ctx.translate(Math.round(canvas.width / 2 - cameraX),
 		      Math.round(canvas.height / 2 - cameraY));
-
-	player.update();
-	map.collision(player);
 
 	var layerZs = Object.keys(layers).map(function(key) { return parseInt(key, 10); });
 
@@ -75,7 +88,9 @@ var sprites = { player0: { src: 'sprite.png',
 		hangingWeed: { src: 'sprite.png',
 			       x: 0, y: 16, w: 32, h: 10 },
 		mud: { src: 'sprite.png',
-		       x: 32, y: 16, w: 32, h: 32 }
+		       x: 32, y: 16, w: 32, h: 32 },
+		sky: { src: 'sky.png' },
+		scenery: { src: 'scenery.png' }
 	      };
 var images = {};  // cached
 drawSprite = function(spriteId, x, y) {
@@ -87,6 +102,15 @@ drawSprite = function(spriteId, x, y) {
 	image.src = sprite.src;
 	images[sprite.src] = image;
 	image.onload = function() {
+	    // get defaults
+	    if (sprite.x === undefined)
+		sprite.x = 0;
+	    if (sprite.y === undefined)
+		sprite.y = 0;
+	    if (sprite.w === undefined)
+		sprite.w = image.width;
+	    if (sprite.h === undefined)
+		sprite.h = image.height;
 	    // our annotation
 	    image.hasLoaded = true;
 	};
@@ -95,9 +119,12 @@ drawSprite = function(spriteId, x, y) {
 	    try {
 		ctx.drawImage(image,
 			      sprite.x, sprite.y, sprite.w, sprite.h,
-			      x, y, sprite.w, sprite.h);
+			      Math.round(x), Math.round(y), sprite.w, sprite.h);
 	    } catch (e) {
 		console.log(e.stack || e.message || e);
+		console.log({drawImage:[image,
+			      sprite.x, sprite.y, sprite.w, sprite.h,
+			      x, y, sprite.w, sprite.h]});
 	    }
 	}
     }
