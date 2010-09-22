@@ -15,8 +15,8 @@ var Map = function() {
 		[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
 		[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
 		[1,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,0,1],
-		[1,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,0,1],
-		[1,1,1,1,0,0,0,0,0,0,0,0,0,1,1,1,0,0,0,1],
+		[1,2,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,0,1],
+		[1,1,1,1,0,0,0,0,0,0,0,0,3,1,1,1,0,0,0,1],
 		[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
 	];
 };
@@ -29,12 +29,11 @@ var line = function(a, b) {
 };
 
 var tiles = [undefined,
-	[vec(0, 0), vec(TILE_SIZE, 0), vec(TILE_SIZE, TILE_SIZE), vec(0, TILE_SIZE)]
+	[vec(0, 0), vec(TILE_SIZE, 0), vec(TILE_SIZE, TILE_SIZE), vec(0, TILE_SIZE)],
+	[vec(0, 0), vec(TILE_SIZE, TILE_SIZE), vec(0, TILE_SIZE)],
+	[vec(TILE_SIZE, 0), vec(TILE_SIZE, TILE_SIZE), vec(0, TILE_SIZE)]
 ];
 
-var POLYS = [
-	[vec(200, 200), vec(300, 200), vec(300, 300), vec(200, 300)],
-];
 
 
 var polygonCollision = function(poly, m) {
