@@ -59,7 +59,7 @@ var loop = function() {
 	ctx.restore();
 	ctx2.clearRect(0, 0, canvas2.width, canvas2.height);
 	ctx2.drawImage(canvas, 0, 0, canvas.width, canvas.height,
-		       0, 0, canvas2.width, canvas2.width);
+		       0, 0, canvas2.width, canvas2.height);
 };
 
 var sprites = { player0: { src: 'sprite.png',
