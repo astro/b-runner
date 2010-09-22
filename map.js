@@ -5,8 +5,8 @@ var Map = function() {
 
 	this.data = [
 		[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+		[1,1,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1],
 		[1,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1],
-		[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1],
 		[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,5,1],
 		[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
 		[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
@@ -31,7 +31,6 @@ var tiles = [undefined,
 	[vec(0, 0), vec(TILE_SIZE, 0), vec(TILE_SIZE, TILE_SIZE/2), vec(0, TILE_SIZE/2)],
 	[vec(0, TILE_SIZE/2), vec(TILE_SIZE, TILE_SIZE/2), vec(TILE_SIZE, TILE_SIZE), vec(0, TILE_SIZE)],
 ];
-
 
 
 var polygonCollision = function(poly, m) {
@@ -68,7 +67,8 @@ var polygonCollision = function(poly, m) {
 		a = b;
 	}
 	return col;
-}
+};
+
 
 /*
 var circle = {};
@@ -114,12 +114,16 @@ Map.prototype.collision = function(player) {
 		}
 	}
 
-	if(col.d < player.radius) { 	// apply corrections
+	if(col.d <= player.radius) { 	// apply corrections
+		player.inAir = false;
 		col.d -= player.radius;
 		var k = col.n.mul(col.d);
 		player.p = player.p.sub(k);
 		var pn = col.n.perp();
 		player.v = pn.mul(player.v.dot(pn));
+	}
+	else {
+		player.inAir = true;
 	}
 
 };
@@ -128,7 +132,6 @@ Map.prototype.collision = function(player) {
 Map.prototype.draw = function() {
 
 	ctx.fillStyle = "#777";
-	ctx.strokeStyle = "#555";
 
 	for(var y = 0, ly = this.data.length; y < ly; ++y) {
 		for(var x = 0, lx = this.data[y].length; x < lx; ++x) {
@@ -144,7 +147,6 @@ Map.prototype.draw = function() {
 				ctx.lineTo(v.x + x * TILE_SIZE, v.y + y * TILE_SIZE);
 			}
 			ctx.fill();
-//			ctx.stroke();
 
 		}
 	}

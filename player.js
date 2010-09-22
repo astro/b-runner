@@ -7,11 +7,13 @@ var Player = function() {
 	this.v = vec(0, 0);
 	this.radius = 10;
 
+	this.inAir = true;
+	this.normal = vec(0, 1);
 };
 
 Player.prototype.draw = function() {
 
-	ctx.fillStyle = "#222";
+	ctx.fillStyle = "#111";
 	ctx.beginPath();
 	ctx.arc(this.p.x, this.p.y, this.radius, 0, Math.PI*2, true);
 	ctx.fill();
