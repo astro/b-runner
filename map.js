@@ -11,7 +11,7 @@ var Map = function() {
 		[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
 		[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
 		[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-		[1,0,0,0,0,0,0,0,0,5,1,4,0,0,0,0,0,0,0,1],
+		[1,0,0,0,0,0,0,0,0,6,6,6,0,0,0,0,0,0,0,1],
 		[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
 		[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
 		[1,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,0,1],
@@ -34,7 +34,7 @@ var tiles = [undefined,
 	[vec(TILE_SIZE, 0), vec(TILE_SIZE, TILE_SIZE), vec(0, TILE_SIZE)],
 	[vec(0, 0), vec(TILE_SIZE, 0), vec(0, TILE_SIZE)],
 	[vec(0, 0), vec(TILE_SIZE, 0), vec(TILE_SIZE, TILE_SIZE)],
-	[vec(0, 0), vec(TILE_SIZE, 0), vec(TILE_SIZE, TILE_SIZE), vec(0, TILE_SIZE)],
+	[vec(0, 0), vec(TILE_SIZE, 0), vec(TILE_SIZE, TILE_SIZE/2), vec(0, TILE_SIZE/2)],
 ];
 
 
