@@ -44,8 +44,8 @@ Player.prototype.update = function() {
 		this.dy = 0;
 	}
 
-	cameraX = this.x;
-	cameraY = this.y;
+	cameraX += (this.x - cameraX) / 10;
+	cameraY += (this.y - cameraY) / 10;
 };
 
 
