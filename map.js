@@ -101,13 +101,12 @@ Map.prototype.collision = function(player) {
 
 	for(var y = y1; y < y1 + 2; ++y) {
 		var row = this.data[y];
-		if(row === undefined) continue;
-
+		if(!row) continue;
 		for(var x = x1; x < x1 + 2; ++x) {
-			if(row[x] === undefined) continue;
+			if(!row[x]) continue;
 
 			var poly = tiles[row[x]];
-			if(poly === undefined) continue;
+			if(!poly) continue;
 
 			var q = vec(x * TILE_SIZE, y * TILE_SIZE);
 			var w = m.sub(q);
@@ -141,14 +140,7 @@ Map.prototype.collision = function(player) {
 Map.prototype.draw = function() {
 
 	ctx.fillStyle = "#777";
-	ctx.strokeStyle = "#fff";
-
-/*
-	ctx.beginPath();
-	ctx.arc(circle.m.x, circle.m.y, Math.abs(circle.r), 0, 2*Math.PI, true);
-	ctx.fill();
-	ctx.stroke();
-*/
+	ctx.strokeStyle = "#555";
 
 	for(var y = 0, ly = this.data.length; y < ly; ++y) {
 		for(var x = 0, lx = this.data[y].length; x < lx; ++x) {
@@ -164,7 +156,7 @@ Map.prototype.draw = function() {
 				ctx.lineTo(v.x + x * TILE_SIZE, v.y + y * TILE_SIZE);
 			}
 			ctx.fill();
-//			ctx.stroke();
+			ctx.stroke();
 
 		}
 	}
