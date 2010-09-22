@@ -8,7 +8,7 @@ var Player = function() {
 	this.radius = 10;
 
 	this.inAir = true;
-	this.normal = vec(0, 1);
+	this.normal = vec(0, -1);
 };
 
 Player.prototype.draw = function() {
@@ -17,6 +17,8 @@ Player.prototype.draw = function() {
 	ctx.beginPath();
 	ctx.arc(this.p.x, this.p.y, this.radius, 0, Math.PI*2, true);
 	ctx.fill();
+
+	ctx.strokeStyle = "#fff";
 
 };
 

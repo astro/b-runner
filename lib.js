@@ -31,7 +31,6 @@ var loop = function() {
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
 
 	map.draw();
-
 	player.update();
 	map.collision(player);
 

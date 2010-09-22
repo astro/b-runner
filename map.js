@@ -115,15 +115,19 @@ Map.prototype.collision = function(player) {
 	}
 
 	if(col.d <= player.radius) { 	// apply corrections
-		player.inAir = false;
+
 		col.d -= player.radius;
 		var k = col.n.mul(col.d);
 		player.p = player.p.sub(k);
 		var pn = col.n.perp();
 		player.v = pn.mul(player.v.dot(pn));
+
+		player.inAir = false;
+		player.normal = col.n;
 	}
 	else {
 		player.inAir = true;
+		player.normal = vec(0, -1);
 	}
 
 };
