@@ -11,8 +11,8 @@ window.onkeydown = function (e) { keys[e.which] = 1; };
 window.onkeyup = function (e) { keys[e.which] = 0; };
 
 
-var canvas;
-var ctx;
+var canvas, canvas2;
+var ctx, ctx2;
 
 var player;
 var cameraX = 0, cameraY = 0;
@@ -23,6 +23,8 @@ var layers = [];
 window.onload = function() {
 	canvas = document.getElementById("canvas");
 	ctx = canvas.getContext('2d');
+	canvas2 = document.getElementById("canvas2");
+	ctx2 = canvas2.getContext('2d');
 
 	player = new Player();
 	map = new Map();
@@ -36,6 +38,7 @@ window.onload = function() {
 var loop = function() {
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
 	ctx.save();
+	//console.log(JSON.stringify({cameraX:cameraX,cameraY:cameraY,w:canvas.width,h:canvas.height,x:Math.round(canvas.width / 2 - cameraX),y:Math.round(canvas.height / 2 - cameraY)}));
 	ctx.translate(Math.round(canvas.width / 2 - cameraX),
 		      Math.round(canvas.height / 2 - cameraY));
 
@@ -54,6 +57,9 @@ var loop = function() {
 	}
 
 	ctx.restore();
+	ctx2.clearRect(0, 0, canvas2.width, canvas2.height);
+	ctx2.drawImage(canvas, 0, 0, canvas.width, canvas.height,
+		       0, 0, canvas2.width, canvas2.width);
 };
 
 var sprites = { player0: { src: 'sprite.png',
@@ -87,7 +93,6 @@ drawSprite = function(spriteId, x, y) {
     } else {
 	if (image.hasLoaded) {
 	    try {
-		console.log(spriteId + ': ' + JSON.stringify([x, y, sprite.w, sprite.h]));
 		ctx.drawImage(image,
 			      sprite.x, sprite.y, sprite.w, sprite.h,
 			      x, y, sprite.w, sprite.h);
