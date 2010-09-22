@@ -9,6 +9,14 @@
 		this.y = y || 0;
 	};
 
+	V.prototype.dup = function(o) {
+		return new V(this.x, this.y);
+	}
+
+	V.prototype.equ = function(o) {
+		return this.x == o.x && this.y == o.y;
+	}
+
 	V.prototype.neg = function() {
 		return new V(-this.x, -this.y);
 	}

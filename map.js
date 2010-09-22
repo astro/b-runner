@@ -1,3 +1,5 @@
+var TILE_SIZE = 20;
+
 var Map = function() {
 
 	this.data = [
@@ -17,10 +19,7 @@ var Map = function() {
 		[1,1,1,1,0,0,0,0,0,0,0,0,0,1,1,1,0,0,0,1],
 		[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
 	];
-
-	this.tileSize = 20;
 };
-
 
 var line = function(a, b) {
 	ctx.beginPath();
@@ -29,9 +28,11 @@ var line = function(a, b) {
 	ctx.stroke();
 };
 
+var tiles = [undefined,
+	[vec(0, 0), vec(TILE_SIZE, 0), vec(TILE_SIZE, TILE_SIZE), vec(0, TILE_SIZE)]
+];
 
 var POLYS = [
-	[vec(100, 200), vec(150, 200), vec(200, 300), vec(100, 300)],
 	[vec(200, 200), vec(300, 200), vec(300, 300), vec(200, 300)],
 ];
 
@@ -72,19 +73,53 @@ var polygonCollision = function(poly, m) {
 	return col;
 }
 
+/*
+var circle = {};
+circle.m = vec(200, 100);
+circle.r = 50;
+
+var circleCollision = function(circle, m) {
+	var col = {};
+
+	var n = m.sub(circle.m);
+	col.d = n.len() - circle.r;
+	col.n = n.normalize();
+	col.p = circle.m.add(n.mul(circle.r));
+
+	return col;
+}
+*/
+
 Map.prototype.collision = function(player) {
 
+	var m = vec(player.x, player.y);
 
 	var col = { d: 9e9 };
 
-	for(var p = POLYS.length - 1; p >= 0; --p) {
-		var poly = POLYS[p];
-		var c = polygonCollision(poly, vec(player.x, player.y));
-		if(c.d < col.d) col = c;
+	var x1 = Math.floor(player.x / TILE_SIZE - 0.5);
+	var y1 = Math.floor(player.y / TILE_SIZE - 0.5);
+
+	for(var y = y1; y < y1 + 2; ++y) {
+		var row = this.data[y];
+		if(row === undefined) continue;
+
+		for(var x = x1; x < x1 + 2; ++x) {
+			if(row[x] === undefined) continue;
+
+			var poly = tiles[row[x]];
+			if(poly === undefined) continue;
+
+			var q = vec(x * TILE_SIZE, y * TILE_SIZE);
+			var w = m.sub(q);
+
+			var c = polygonCollision(poly, w);
+			if(c.d < col.d) col = c;
+
+		}
 	}
 
-	if(col.d < player.radius) {
-		// apply corrections here
+
+	if(col.d < player.radius) { 	// apply corrections
 
 		col.d -= player.radius;
 
@@ -98,28 +133,7 @@ Map.prototype.collision = function(player) {
 		player.dx  = dp.x;
 		player.dy  = dp.y;
 
-		ctx.strokeStyle = "#00f";
-		line(col.p, col.p.add(col.n.mul(20)));
 	}
-
-/*
-	var x1 = Math.floor(player.x / this.tileSize - 0.5);
-	var y1 = Math.floor(player.y / this.tileSize - 0.5);
-
-	var col = { d: 0 };
-
-	ctx.fillStyle = "#f00";
-
-	for(var y = y1; y < y1 + 2; ++y) {
-		var row = this.data[y];
-		if(!row) continue;
-		for(var x = x1; x < x1 + 2; ++x) {
-//			if(row[x])
-				ctx.fillRect(x * this.tileSize, y * this.tileSize, this.tileSize, this.tileSize);
-
-		}
-	}
-*/
 
 };
 
@@ -129,30 +143,31 @@ Map.prototype.draw = function() {
 	ctx.fillStyle = "#777";
 	ctx.strokeStyle = "#fff";
 
-	for(var p = POLYS.length - 1; p >= 0; --p) {
-		var poly = POLYS[p];
-
-		ctx.beginPath();
-		var v = poly[0];
-		ctx.lineTo(v.x, v.y);
-		for(var i = poly.length - 1; i >= 0; --i) {
-			v = poly[i];
-			ctx.lineTo(v.x, v.y);
-		}
-		ctx.fill();
-		ctx.stroke();
-	}
-
 /*
+	ctx.beginPath();
+	ctx.arc(circle.m.x, circle.m.y, Math.abs(circle.r), 0, 2*Math.PI, true);
+	ctx.fill();
+	ctx.stroke();
+*/
+
 	for(var y = 0, ly = this.data.length; y < ly; ++y) {
 		for(var x = 0, lx = this.data[y].length; x < lx; ++x) {
 
-			if(this.data[y][x]) {
-				ctx.fillRect(x * this.tileSize, y * this.tileSize, this.tileSize, this.tileSize);
+			var poly = tiles[this.data[y][x]];
+			if(poly === undefined) continue;
+
+			ctx.beginPath();
+			var v = poly[0];
+			ctx.lineTo(v.x + x * TILE_SIZE, v.y + y * TILE_SIZE);
+			for(var i = poly.length - 1; i >= 0; --i) {
+				v = poly[i];
+				ctx.lineTo(v.x + x * TILE_SIZE, v.y + y * TILE_SIZE);
 			}
+			ctx.fill();
+//			ctx.stroke();
+
 		}
 	}
-*/
 };
 
 
