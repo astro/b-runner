@@ -89,6 +89,8 @@ var sprites = { player0: { src: 'sprite.png',
 			       x: 0, y: 16, w: 32, h: 10 },
 		mud: { src: 'sprite.png',
 		       x: 32, y: 16, w: 32, h: 32 },
+		bricks: { src: 'sprite.png',
+			  x: 64, y: 16, w: 32, h: 32 },
 		sky: { src: 'sky.png' },
 		scenery: { src: 'scenery.png' }
 	      };
