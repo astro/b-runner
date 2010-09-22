@@ -4,7 +4,7 @@ var Player = function() {
 
 	this.p = vec(160, 100);
 	this.v = vec(0, 0);
-	this.radius = 12;
+	this.radius = 14;
 
 	this.inAir = true;
 	this.normal = vec(0, -1);
@@ -32,13 +32,19 @@ Player.prototype.update = function() {
 
 	if(this.inAir) {
 
+		var d = this.normal.perp().mul((keys[37] - keys[39]) * 3);
+		this.v.x = d.x;
 
 	}
 	else {
 	
-		var d = this.normal.perp().mul((keys[37] - keys[39]) * 0.3);
-		this.v.x += d.x;
-		this.v.y += d.y;
+		var d = this.normal.perp().mul((keys[37] - keys[39]) * 3);
+		this.v.x = d.x;
+	
+		if(keys[88]) {
+			this.v.x += this.normal.x * 4;
+			this.v.y += this.normal.y * 4;
+		}
 	
 	}
 

@@ -1,5 +1,5 @@
 
-var TILE_SIZE = 20;
+var TILE_SIZE = 32;
 
 var Map = function() {
 
