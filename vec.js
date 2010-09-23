@@ -9,6 +9,26 @@
 		this.y = y || 0;
 	};
 
+	V.prototype.mov = function(o) {
+		this.x = o.x;
+		this.y = o.y;
+	}
+
+	V.prototype.addEq = function(o) {
+		this.x += o.x;
+		this.y += o.y;
+	}
+
+	V.prototype.subEq = function(o) {
+		this.x -= o.x;
+		this.y -= o.y;
+	}
+
+	V.prototype.mulEq = function(f) {
+		this.x *= f;
+		this.y *= f;
+	}
+
 	V.prototype.dup = function() {
 		return new V(this.x, this.y);
 	}

@@ -23,6 +23,7 @@ window.onload = function() {
 	player = new Player();
 	map = new Map();
 
+//	setInterval(loop, 20);	// 50 fps
 	setInterval(loop, 20);	// 50 fps
 };
 
