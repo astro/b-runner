@@ -2,7 +2,7 @@
 
 var Player = function() {
 
-	this.pos = vec(160, 100);
+	this.pos = vec(300, 400);
 	this.vel = vec(0, 0);
 	this.radius = 15;
 
@@ -57,6 +57,8 @@ Player.prototype.applyFriction = function() {
 };
 
 Player.prototype.update = function() {
+
+//	console.log(this.normal.y + " " + this.collision);
 
 	var t = keys[39] - keys[37];
 	var perp = this.normal.perp();
