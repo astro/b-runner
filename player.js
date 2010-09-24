@@ -1,19 +1,13 @@
 
-var GRAVITY = 0.6;
-var MAX_SPEED = 14;
 
 var Player = function() {
 
-	this.p = vec(160, 100);
-	this.v = vec(0, 0);
-	this.radius = 14;
+	this.pos = vec(160, 100);
+	this.vel = vec(0, 0);
+	this.radius = 15;
 
-	this.speed = 0;
-
-
-	this.groundForce = 0;
 	this.normal = vec(0, -1);
-
+	this.collision = false;
 	this.inAir = true;
 
 	this.jumpState = 0;
@@ -22,53 +16,94 @@ var Player = function() {
 };
 
 
+
+var GRAVITY = 0.6;
+var MAX_SPEED = 12;
+var MAX_X_SPEED = 6;
+var FRICTION_GROUND = 0.4;
+var FRICTION_AIR = 0.2;
+
+
+Player.prototype.applyFriction = function() {
+
+	var dir
+	if(this.inAir) {
+		dir = this.vel.x;
+		friction = FRICTION_AIR;
+	}
+	else {
+		var perp = this.normal.perp();
+		dir = -perp.dot(this.vel);
+		friction = FRICTION_GROUND;
+	}
+
+	if(dir > 0) {
+		dir -= friction;
+		if(dir < 0) dir = 0;
+		else if(dir > MAX_X_SPEED) dir = MAX_X_SPEED;
+	}
+	else if(dir < 0) {
+		dir += friction;
+		if(dir > 0) dir = 0;
+		else if(dir < -MAX_X_SPEED) dir = -MAX_X_SPEED;
+	}
+
+	if(this.inAir) this.vel.x = dir;
+	else {
+		this.vel = this.normal.mul(this.normal.dot(this.vel));
+		this.vel.subEq(perp.mul(dir));
+	}
+
+};
+
 Player.prototype.update = function() {
 
-	ctx.fillStyle = "#000";
-	ctx.fillText(this.groundForce, 20, 20);
+	var t = keys[39] - keys[37];
+	var perp = this.normal.perp();
 
-	console.log(this.groundForce);
+	if(this.collision && this.normal.y < -0.6) {
+		this.inAir = false;
 
+		// friction
+		this.applyFriction(FRICTION_GROUND);
+		this.vel.subEq(perp.mul(t * FRICTION_GROUND * 2));
 
-	if(this.groundForce < 0) this.inAir = false;
-	else this.inAir = true;
-
-	if(!this.inAir) {
-
-		var d = this.normal.perp().mul((keys[37] - keys[39]) * 5);
-		this.v.mov( d);
-	
 		// initialize jump
 		if(keys[88] && !this.lastJump) {
 			this.jumpState = 10;
-			this.v.y = -7;
+			this.vel.addEq(this.normal.mul(5));
+
+			h = this.pos.y;
+			hx = 0;
 		}
 	}
 	else {
+		this.inAir = true;
+
+		// friction
+		this.applyFriction(FRICTION_AIR);
+		this.vel.x += t * FRICTION_AIR * 2;
+
 		// jump higher
 		if(this.jumpState > 0 && this.lastJump && keys[88]) {
 			this.jumpState--;
-			this.v.y = -7;
+			this.vel.y = -7;
 		}
-
-//		var d = this.normal.perp().mul((keys[37] - keys[39]) * 5);
-//		this.v.x = d.x;
-
+		else this.jumpState = 0;
 	}
 	this.lastJump = keys[88];
 
-
 	// gravity
-	this.v.y += GRAVITY;
+	this.vel.y += GRAVITY;
 
 	// limit speed
-	if(this.v.lenSq() > MAX_SPEED * MAX_SPEED) {
-		this.v.normalize();
-		this.v.mulEq(MAX_SPEED);
+	if(this.vel.lenSq() > MAX_SPEED * MAX_SPEED) {
+		this.vel.normalize();
+		this.vel.mulEq(MAX_SPEED);
 	}
 
 	// apply velocity
-	this.p.addEq(this.v);
+	this.pos.addEq(this.vel);
 
 };
 
@@ -79,13 +114,13 @@ Player.prototype.draw = function() {
 	else ctx.fillStyle = "#661";
 
 	ctx.beginPath();
-	ctx.arc(this.p.x, this.p.y, this.radius, 0, Math.PI*2, true);
+	ctx.arc(this.pos.x, this.pos.y, this.radius, 0, Math.PI*2, true);
 	ctx.fill();
 
 	ctx.strokeStyle = "#00f";
-	var n = this.p.add(this.normal.mul(20 * this.groundForce));
+	var n = this.pos.add(this.normal.mul(20 * this.groundForce));
 	ctx.beginPath();
-	ctx.lineTo(this.p.x, this.p.y);
+	ctx.lineTo(this.pos.x, this.pos.y);
 	ctx.lineTo(n.x, n.y);
 	ctx.stroke();
 
