@@ -15,7 +15,7 @@ var Player = function() {
 
 };
 
-
+Player.prototype.sprite = new Sprite("anim.png");
 
 var GRAVITY = 0.6;
 var MAX_SPEED = 12;
