@@ -125,6 +125,5 @@ Player.prototype.draw = function() {
 	ctx.lineTo(this.pos.x, this.pos.y);
 	ctx.lineTo(n.x, n.y);
 	ctx.stroke();
-
 };
 
