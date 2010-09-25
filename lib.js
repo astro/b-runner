@@ -39,7 +39,7 @@ var wait = function() {
 	}
 	else {
 		// initiate loop
-		setInterval(loop, 20);	// 50 fps
+		setInterval(loop, 25);	// 40 fps
 	}
 };
 

@@ -23,7 +23,13 @@ var Sprite = function(src) {
 		}
 		that.constructor.prototype.imagesToLoad--;
 	}
+
 };
 Sprite.prototype.imagesToLoad = 0;
 
+Sprite.prototype.draw = function(frame, flipped) {
+	var x = frame * this.frameSize;
+	var y = flipped ? this.frameSize : 0;
+	ctx.drawImage(this.canvas, x, y, this.frameSize, this.frameSize, -this.frameSize/2, -this.frameSize/2, this.frameSize, this.frameSize);
+};
 
